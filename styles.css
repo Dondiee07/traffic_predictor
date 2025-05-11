@@ -1,0 +1,35 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+}
+
+header h1 {
+  color: #007bff;
+  font-size: 2.5rem;
+}
+
+header p {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+#predictForm {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+#result {
+  display: none;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+#result.success {
+  background-color: #d4edda;
+}
+
+#result.error {
+  background-color: #f8d7da;
+}

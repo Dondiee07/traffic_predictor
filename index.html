@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Traffic Predictor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: url('https://images.unsplash.com/photo-1503437313881-503a91226422?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      padding-top: 80px; /* Space for navbar */
+    }
+
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.9);
+      min-height: 100vh;
+      padding: 60px 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .form-card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-weight: 500;
+    }
+
+    #result {
+      display: none;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    #loading {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .spinner-border {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    #about {
+      margin-top: 60px;
+      padding: 30px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 576px) {
+      .form-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="nav.html">Smart Traffic Predictor</a>
+    </div>
+  </nav>
+
+  <div class="overlay">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h1>Smart Traffic Predictor</h1>
+        <p class="lead">Enter vehicle details to predict congestion.</p>
+        <div class="text-center my-4">
+  <img src="traffic.png" alt="Traffic Jam" class="img-fluid rounded" style="max-height: 300px;">
+</div>
+
+      </div>
+
+      <div class="form-card">
+        <form id="predictForm">
+          <div class="mb-3">
+            <label for="time" class="form-label">Time</label>
+            <input type="time" class="form-control" id="time" required>
+          </div>
+          <div class="mb-3">
+            <label for="dayOfWeek" class="form-label">Day of the Week</label>
+            <select class="form-control" id="dayOfWeek" required>
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="carCount" class="form-label">Number of Cars</label>
+            <input type="number" class="form-control" id="carCount" required>
+          </div>
+          <div class="mb-3">
+            <label for="bikeCount" class="form-label">Number of Bikes</label>
+            <input type="number" class="form-control" id="bikeCount" required>
+          </div>
+          <div class="mb-3">
+            <label for="busCount" class="form-label">Number of Buses</label>
+            <input type="number" class="form-control" id="busCount" required>
+          </div>
+          <div class="mb-3">
+            <label for="truckCount" class="form-label">Number of Trucks</label>
+            <input type="number" class="form-control" id="truckCount" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Predict Traffic</button>
+        </form>
+
+        <div id="loading" class="text-center mt-3">
+          <div class="spinner-border text-primary" role="status"></div>
+        </div>
+
+        <div id="result" class="mt-3"></div>
+      </div>
+
+      <div class="my-5 text-center">
+  <h4>Traffic Area Map</h4>
+  <div class="ratio ratio-16x9">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19800.174558592768!2d55.29624926314496!3d25.276987259527222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f4345ddc840bb%3A0x6f7c153aa2e38a4d!2sDubai!5e0!3m2!1sen!2sae!4v1618408861345!5m2!1sen!2sae"
+      width="600"
+      height="450"
+      style="border:0;"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</div>
+
+
+      <!-- About Section -->
+      <div id="about" class="mt-5">
+        <h4>About This Project</h4>
+        <p>
+          The Smart Traffic Predictor is a web-based application that uses real-time inputs like time of day,
+          day of the week, and vehicle counts to predict potential traffic congestion. It’s built using a machine
+          learning model trained on synthetic data and deployed using Flask. This project is a practical demonstration
+          of how predictive analytics can help optimize urban traffic management.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Smart Traffic Predictor | Built with ❤️ by [Dondiee]
+  </footer>
+
+  <script>
+    document.getElementById("predictForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const time = document.getElementById("time").value;
+      const dayOfWeek = document.getElementById("dayOfWeek").value;
+      const carCount = document.getElementById("carCount").value;
+      const bikeCount = document.getElementById("bikeCount").value;
+      const busCount = document.getElementById("busCount").value;
+      const truckCount = document.getElementById("truckCount").value;
+
+      const resultDiv = document.getElementById("result");
+      const loadingDiv = document.getElementById("loading");
+
+      resultDiv.style.display = "none";
+      loadingDiv.style.display = "block";
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/predict', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            time: time,
+            dayOfWeek: dayOfWeek,
+            carCount: carCount,
+            bikeCount: bikeCount,
+            busCount: busCount,
+            truckCount: truckCount
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          resultDiv.className = "success";
+          resultDiv.innerHTML = `<strong>Prediction:</strong> ${data.prediction}<br><strong>Reason:</strong> ${data.reason}`;
+        } else {
+          resultDiv.className = "error";
+          resultDiv.innerHTML = `Error: ${data.message || "Something went wrong."}`;
+        }
+      } catch (error) {
+        resultDiv.className = "error";
+        resultDiv.innerHTML = `Error: ${error.message}`;
+      }
+
+      loadingDiv.style.display = "none";
+      resultDiv.style.display = "block";
+    });
+  </script>
+</body>
+</html>
